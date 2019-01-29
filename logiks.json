@@ -1,0 +1,28 @@
+{
+    "name": "Data Migrator",
+    "version": "1.0",
+    "status": "alpha",
+    "type": "module",
+    "package":"com.smartinfologiks.datamigrator",
+    "description": "Data Migrator helps migrating data from one database to another, export and import data into system directly.",
+    "keywords": "logiks,modules,datamigrator",
+    "license": "MIT",
+    "marketid": "",
+    "homepage": "https://smartinfologiks@bitbucket.org/silkprojects/datamigrator.git",
+    "bugs": "https://support.smartinfologiks.com",
+    "private": true,
+    "dependencies": {
+        "core": "+4.0.0",
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://smartinfologiks@bitbucket.org/silkprojects/datamigrator.git"
+    },
+    "authors": [
+        {
+            "name": "SmartinfoLogiks Team",
+            "email": "admin@smartinfologiks.com",
+            "authorid":"silkadmin"
+        }
+    ]
+}
