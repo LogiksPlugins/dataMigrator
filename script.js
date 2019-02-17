@@ -1,6 +1,12 @@
 $(function() {
   
-  importPane(this);
+  if($(".nav.navbar-right li.active a").length>0) {
+    cmd = $(".nav.navbar-right li.active a").data("cmd");
+    if(typeof window[cmd]=="function") window[cmd]();
+    else importPane();
+  } else {
+    importPane();
+  }
 });
 function refreshUI() {
   window.location.reload();

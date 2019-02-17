@@ -11,11 +11,11 @@ $pageOptions=[
             
 			//"verifier"=>["title"=>"Verifier","align"=>"right","class"=>($_REQUEST['panel']=="verifier")?"active":""],
 			"importPane"=>["title"=>"Import","align"=>"right","class"=>($_REQUEST['panel']=="import")?"active":""],
-            "exportPane"=>["title"=>"Export","align"=>"right","class"=>($_REQUEST['panel']=="export")?"active":""],
-            "migratePane"=>["title"=>"Migrate","align"=>"right","class"=>($_REQUEST['panel']=="migrate")?"active":""],
+      "exportPane"=>["title"=>"Export","align"=>"right","class"=>($_REQUEST['panel']=="export")?"active":""],
+      "migratePane"=>["title"=>"Migrate","align"=>"right","class"=>($_REQUEST['panel']=="migrate")?"active":""],
 			// ['type'=>"bar"],
             
-            "refreshUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
+      "refreshUI"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			
 			
 // 			"createNew"=>["icon"=>"<i class='fa fa-plus'></i>","tips"=>"Create New"],
