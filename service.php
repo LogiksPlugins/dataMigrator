@@ -209,6 +209,7 @@ switch($_REQUEST['action']){
                                         unset($finalData[$row[$primaryColumn]]);
                                     }
                                 }
+                                echo "<h1 align=center>Data successfully updated into database</h1>";
                             } else {
                                 echo "<h1 align=center>Found nothing to update</h1>";
                             }
