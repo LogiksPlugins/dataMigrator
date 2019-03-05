@@ -27,35 +27,14 @@ switch($_REQUEST['action']){
           printServiceMsg(["id"=>"ID"]);
         }
     break;
-    case "export":
-        if(isset($_REQUEST['dbtable'])) {
-            $opts = [];
-            $opts = array_merge($opts, $_REQUEST);
-            $cols = _db()->get_columnList($opts['dbtable']);
-            $colsFinal = array_filter($cols,"removeSysCols",ARRAY_FILTER_USE_BOTH);
-            
-            $finalOut = implode(",",$colsFinal);
-            
-            header('Content-Type: application/csv');
-            header('Content-Disposition: attachment; filename='.$_REQUEST['dbtable'].'.csv');
-            header('Content-Transfer-Encoding: binary');
-            header('Pragma: no-cache');
-            header('Expires: 0');
-            header('Pragma: public');
-            header('Content-Length: '.strlen($finalOut));
-            echo $finalOut;
-        } else {
-            echo "Source Table not defined";
-        }
-    break;
     case "upload":
         if(isset($_FILES) && isset($_FILES['attachfile'])) {
             if(isset($_SESSION['DATAMIGRATORCSVCOLS'])) {
                 unset($_SESSION['DATAMIGRATORCSVCOLS']);
             }
             
-            $type=explode("/",$_FILES['attachfile']['type']);
-            $type=strtolower(end($type));
+            // $type=explode("/",$_FILES['attachfile']['type']);
+            // $type=strtolower(end($type));
             
             $file=$_FILES['attachfile']['tmp_name'];
             $fname=$_FILES['attachfile']['name'];
@@ -83,7 +62,8 @@ switch($_REQUEST['action']){
                 return;
             }
             
-            switch($type) {
+            //switch($type) {
+            switch($ext) {
                 case "csv":
                     sendResponse(true,$tName);
                     break;
@@ -170,13 +150,14 @@ switch($_REQUEST['action']){
                     $finalRow['edited_by']=$curUser;
                     $finalRow['edited_on']=$curDate;
                     
-                    if(isset($finalRow[$primaryColumn])) {
+                    if(isset($finalRow[$primaryColumn]) && strlen($finalRow[$primaryColumn])>0) {
                         $idArr[]=$finalRow[$primaryColumn];
                         $finalData[$finalRow[$primaryColumn]]=$finalRow;
                     } else {
-                        $finalData[]=$finalRow;
+                        $finalData[md5(microtime())]=$finalRow;
                     }
                 }
+                // printArray($finalData);exit();
                 //$toUpdateData=_db()->_selectQ($dbTable,$primaryColumn)->_whereIn($primaryColumn,$idArr)->_GET();
                 //printArray($_POST);
                 //exit();
@@ -189,6 +170,9 @@ switch($_REQUEST['action']){
                                     if(isset($finalData[$row[$primaryColumn]])) {
                                         $qdata=$finalData[$row[$primaryColumn]];
                                         unset($qdata[$primaryColumn]);
+                                        
+                                        unset($qdata['created_by']);
+                                        unset($qdata['created_on']);
 
                                         $a=_db()->_updateQ($dbTable,$qdata,[$primaryColumn=>$row[$primaryColumn]])->_RUN();
                                         
@@ -202,6 +186,8 @@ switch($_REQUEST['action']){
                             echo "<h1 align=center>Data successfully imported into database</h1>";
                             return;
                         }
+                        // printArray($finalData);
+                        // echo _db()->_insert_BatchQ($dbTable,array_values($finalData))->_SQL();
                         $a=_db()->_insert_BatchQ($dbTable,array_values($finalData))->_RUN();
                         if($a) {
                             echo "<h1 align=center>Data successfully imported into database</h1>";
@@ -268,12 +254,5 @@ function getCSVCols($csvFilePath) {
         }
     }
     return [];
-}
-function removeSysCols($key) {
-    if(in_array($key,[
-            "created_by","created_on",
-            "edited_by","edited_on",
-            ])) return false;
-    else return true;
 }
 ?>
